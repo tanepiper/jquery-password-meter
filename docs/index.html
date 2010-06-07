@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>jQuery Password Strength Meter</title>
+		<script type="text/javascript" src="../libs/jquery.js"></script>
+		<script type="text/javascript" src="../source/digitalspaghetti.password.js"></script>
+	<body>
+		
+		<h1>jQuery Password Strength Meter</h1>
+		<p>
+			By <a href="http://digitalspaghetti.me.uk">Tane Piper</a> (aka digitalspaghetti).
+		</p>
+		<p>
+			This is a very simple plugin that provides password strength functionality for your signup
+			forms.  To activate the plugin, create a password field in your form and attach the function
+			to it.
+		</p>
+		<pre>
+&lt;input type="password" id="password" name="password" />
+&lt;script type="text/javascript">
+	jQuery('#password').pstrength();
+&lt;/script>
+		</pre>
+		<p>
+			Now you have a fully functional password strength meter.  The plugin defines some options
+			and methods that allow you to customise your form.  You can override the default settings,
+			switch on or off certain validation critera, and even write your own validation methods.
+		</p>
+		<p>
+			Below are a list of options you can overide:
+		</p>
+		<pre>
+'defaults' : {
+	'displayMinChar': true,
+	'minChar': 8,
+	'minCharText': 'You must enter a minimum of %d characters',
+	'colors': ["#f00", "#c06", "#f60", "#3c0", "#3f0"],
+	'scores': [20, 30, 43, 50],
+	'verdicts':	['Weak', 'Normal', 'Medium', 'Strong', 'Very Strong'],
+	'raisePower': 1.4
+},
+'ruleScores' : {
+	'length': 0,
+	'lowercase': 1,
+	'uppercase': 3,
+	'one_number': 3,
+	'three_numbers': 5,
+	'one_special_char': 3,
+	'two_special_char': 5,
+	'upper_lower_combo': 2,
+	'letter_number_combo': 2,
+	'letter_number_char_combo': 2
+},
+	'rules' : {
+	'length': true,
+	'lowercase': true,
+	'uppercase': true,
+	'one_number': true,
+	'three_numbers': true,
+	'one_special_char': true,
+	'two_special_char': true,
+	'upper_lower_combo': true,
+	'letter_number_combo': true,
+	'letter_number_char_combo': true
+}			
+		</pre>
+		<p>
+			To overide the defaults, you simply need to pass these into the initialization function.
+		</p>
+		<pre>
+jQuery('#password').pstrength({minChar: 12});
+		</pre>
+		<p>
+			To add your own custom validation rules, you can use the <em>jQuery().pstrength.addRule</em> method.
+		</p>
+		<pre>
+jQuery('#password').pstrength.addRule('twelvechar', function (word, score) {
+  return word.length >= 12 && score;
+}, 3, true);
+		</pre>
+		<p>
+				This will add a lamda function that returns the score if the length of the password is greater
+				or equal to 12 characters.  The first parameter is the name of the validation rule.  The second is the
+				function to execute.  Each function must be passed the word and score in that order.  The third rule
+				is the score to return if the validation is true.  The forth parameter makes sure the validation rule is
+				active.  If false is passed your validation rule will be added but ignored.
+		<p>
+		<p>
+			You can also overide the scores of each rules, and wether to bypass any rules by setting them to false.  To do
+			this, two simple methods are provided:
+		</p>
+		<pre>
+jQuery('#password').pstrength.changeScore('one_number', 50);
+jQuery('#password').pstrength.ruleActive('one_number', false);
+		</pre>
+			Dependancies:
+			<ul>
+				<li><a href="http://jquery.com">&gt;= jQuery 1.2</a></li>
+			</ul>
+		</p>
+		<div style="position:relative; margin: 0 auto; width: 50%; top: 25%">
+			<h2>Demo</h2>
+			<table>
+				<tr>
+					<td>
+						<label for="username">Username</label>
+					</td>
+					<td>
+						<input type="text" id="username" name="username" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="password">Password</label>
+					</td>
+					<td>
+						<input type="password" id="password" name="password" />
+					</td>
+				</tr>
+		</div>
+		<script type="text/javascript">
+			jQuery('#password').pstrength({'debug': true});
+			jQuery('#password').pstrength.addRule('twelvechar', function (word, score) {
+				return word.length >= 12 && score;
+			}, 3, true);
+		</script>
+	</body>
+</html>
